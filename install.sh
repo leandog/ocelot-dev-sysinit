@@ -97,17 +97,13 @@ then
     ar = add -A
   EOF
 
-  while true; do
-    echo "What is your name to be used for Git?"
-    read -p "This is your first & last name to be used in Git commits (ie. John Doe) :" yn
-    git config --global user.name "$yn"
-  done
+  echo "What is your name to be used for Git?"
+  read -p "This is your first & last name to be used in Git commits (ie. John Doe) :" yn
+  git config --global user.name "$yn"
 
-  while true; do
-    echo "What is your email to be used for Git?"
-    read -p "This is to be used in Git commits (ie. john.doe@leandog.com) :" yn
-    git config --global user.email "$yn"
-  done
+  echo "What is your email to be used for Git?"
+  read -p "This is to be used in Git commits (ie. john.doe@leandog.com) :" yn
+  git config --global user.email "$yn"
 fi
 
 if ! [[ $result =~ macvim ]]
