@@ -18,16 +18,19 @@ result=`ls -la ~/.bash_profile 2>&1`
 
 if [[ $result =~ No\ such\ file ]]
 then
-  echo "Looks like you don't have a .bash_profile, let's make one!"
-  touch ~/.bash_profile
-  (
-  cat <<'EOL'
-  if [ -f ~/.bashrc ] && [ "${SHELL##*/}" == "bash" ]
-  then
-    . ~/.bashrc
-  fi
-  EOL
-  ) > ~/.bash_profile
+
+echo "Looks like you don't have a .bash_profile, let's make one!"
+touch ~/.bash_profile
+
+(
+cat <<'EOL'
+if [ -f ~/.bashrc ] && [ "${SHELL##*/}" == "bash" ]
+then
+  . ~/.bashrc
+fi
+EOL
+) > ~/.bash_profile
+
 fi
 
 result=`which brew 2>&1`
