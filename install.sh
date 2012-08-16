@@ -19,17 +19,15 @@ result=`ls -la ~/.bash_profile 2>&1`
 if [[ $result =~ No\ such\ file ]]
 then
 
-echo "Looks like you don't have a .bash_profile, let's make one!"
-touch ~/.bash_profile
+  echo "Looks like you don't have a .bash_profile, let's make one!"
+  touch ~/.bash_profile
 
-(
-cat <<'EOL'
+cat > ~/.bash_profile <<EOL
 if [ -f ~/.bashrc ] && [ "${SHELL##*/}" == "bash" ]
 then
   . ~/.bashrc
 fi
 EOL
-) > ~/.bash_profile
 
 fi
 
@@ -68,39 +66,40 @@ if ! [[ $result =~ git ]]
 then
   echo "Installing git"
   brew install git
-  `cat >> ~/.gitconfig <<EOL
-  [color]
-    diff = auto
-    status = auto
-    branch = auto
-    interactive = auto
-    ui = auto
-  [gc]
-    auto = 1
-  [merge]
-    summary = true
-  [alias]
-    co = checkout
-    ci = commit -v
-    st = status
-    cp = cherry-pick -x
-    rb = rebase
-    pr = pull --rebase
-    br = branch
-    b = branch -v
-    r = remote -v
-    t = tag -l
-    put = push origin HEAD
-    unstage = reset HEAD
-    uncommit = reset --soft HEAD^
-    recommit = commit -C head --amend
-    d = diff
-    c = commit -v
-    s = status
-    dc = diff --cached
-    pr = pull --rebase
-    ar = add -A
-  EOL`
+
+cat > ~/.gitconfig <<EOL
+[color]
+  diff = auto
+  status = auto
+  branch = auto
+  interactive = auto
+  ui = auto
+[gc]
+  auto = 1
+[merge]
+  summary = true
+[alias]
+  co = checkout
+  ci = commit -v
+  st = status
+  cp = cherry-pick -x
+  rb = rebase
+  pr = pull --rebase
+  br = branch
+  b = branch -v
+  r = remote -v
+  t = tag -l
+  put = push origin HEAD
+  unstage = reset HEAD
+  uncommit = reset --soft HEAD^
+  recommit = commit -C head --amend
+  d = diff
+  c = commit -v
+  s = status
+  dc = diff --cached
+  pr = pull --rebase
+  ar = add -A
+EOL
 
   echo " "
   read -p "What is your first & last name to be used in Git commits (ie. John Doe) : "
@@ -113,17 +112,16 @@ then
   git config --global user.email "$REPLY"
 fi
 
-if ! [[ $result =~ macvim ]]
-then
+if ! [[ $result =~ macvim ]]; then
   echo "Installing MacVim since it is much newer than the Vim installed in OS X"
   brew install macvim
   echo "Adding vim override to local .bashrc"
 
-  `cat >> ~/.bashrc <<EOL
-  vim() {
-    /Applications/MacVim.app/Contents/MacOS/Vim $*
-  }
-  EOL`
+cat >> ~/.bashrc <<EOL
+vim() {
+  /Applications/MacVim.app/Contents/MacOS/Vim $*
+}
+EOL
 
   source ~/.bashrc
   echo "Install Pathogen plugin for Vim"
@@ -156,10 +154,14 @@ then
   echo "Installing a default .gemrc"
   curl -so ~/.gemrc https://raw.github.com/leandog/ocelot-dev-sysinit/master/.gemrc
   echo "Installing a default .rvmrc"
-  echo "rvm_ps1=1" >> ~/.rvmrc
-  echo "rvm_path=\"${HOME}/.rvm\"" >> ~/.rvmrc
-  echo "rvm_pretty_print_flag=1" >> ~/.rvmrc
-  echo "rvm_gemset_create_on_use_flag=1" >> ~/.rvmrc
+
+cat > ~/.rvmrc <<EOL
+rvm_ps1=1
+rvm_path="${HOME}/.rvm"
+rvm_pretty_print_flag=1
+rvm_gemset_create_on_use_flag=1
+EOL
+
 else
   echo "RVM installed: `echo $result`"
   echo "Upgrading RVM to the latest build"
