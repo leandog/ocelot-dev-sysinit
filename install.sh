@@ -14,7 +14,7 @@ then
   exit
 fi
 
-result=`ls -la ~/.bash_profile`
+result=`ls -la ~/.bash_profile 2>&1`
 
 if [[ $result =~ No\ such\ file ]]
 then
@@ -28,7 +28,7 @@ then
   EOF`
 fi
 
-result=`which brew`
+result=`which brew 2>&1`
 
 if [[ -z "$result" ]]
 then
@@ -125,7 +125,7 @@ then
   `mkdir -p ~/.vim/autoload ~/.vim/bundle`
   `curl -so ~/.vim/autoload/pathogen.vim https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim`
   `curl -so ~/.vim/update_bundles https://raw.github.com/leandog/ocelot-dev-sysinit/master/update_bundles`
-  vimrccheck=`ls -la ~/.vimrc`
+  vimrccheck=`ls -la ~/.vimrc 2>&1`
 
   if [[ $vimrccheck =~ No\ such\ file ]]
   then
@@ -139,7 +139,7 @@ fi
 
 result=`which rvm`
 
-if [$result -eq ""]
+if [[ -z "$result" ]]
 then
   echo "RVM Not installed"
   echo "Installing RVM"
