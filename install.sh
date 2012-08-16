@@ -98,11 +98,13 @@ then
   EOL`
 
   echo "What is your name to be used for Git?"
-  read -p "This is your first & last name to be used in Git commits (ie. John Doe) :" yn
+  echo "This is your first & last name to be used in Git commits (ie. John Doe) :"
+  read -p yn
   git config --global user.name "$yn"
 
   echo "What is your email to be used for Git?"
-  read -p "This is to be used in Git commits (ie. john.doe@leandog.com) :" yn
+  echo "This is to be used in Git commits (ie. john.doe@leandog.com) :"
+  read -p yn
   git config --global user.email "$yn"
 fi
 
