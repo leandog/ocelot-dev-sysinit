@@ -150,7 +150,7 @@ then
   curl -so ~/.gemrc https://raw.github.com/leandog/ocelot-dev-sysinit/master/.gemrc
   echo "Installing a default .rvmrc"
   echo "rvm_ps1=1" >> ~/.rvmrc
-  echo 'rvm_path="`echo $HOME`/.rvm"' >> ~/.rvmrc
+  echo "rvm_path=\"${HOME}/.rvm\"" >> ~/.rvmrc
   echo "rvm_pretty_print_flag=1" >> ~/.rvmrc
   echo "rvm_gemset_create_on_use_flag=1" >> ~/.rvmrc
 else
