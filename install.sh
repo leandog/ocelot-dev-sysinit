@@ -20,12 +20,13 @@ if [[ $result =~ No\ such\ file ]]
 then
   echo "Looks like you don't have a .bash_profile, let's make one!"
   touch ~/.bash_profile
-  cat <<EOF >> ~/.bash_profile
+  cat >> ~/.bash_profile <<EOF
   if [ -f ~/.bashrc ] && [ "${SHELL##*/}" == "bash" ]
   then
     . ~/.bashrc
   fi
   EOF
+
 fi
 
 result=`which brew 2>&1`
@@ -63,7 +64,7 @@ if ! [[ $result =~ git ]]
 then
   echo "Installing git"
   brew install git
-  cat <<EOF >> ~/.gitconfig
+  cat >> ~/.gitconfig <<EOF
   [color]
     diff = auto
     status = auto
@@ -112,7 +113,7 @@ then
   brew install macvim
   echo "Adding vim override to local .bashrc"
 
-  cat <<EOF >> ~/.bashrc
+  cat >> ~/.bashrc <<EOF
   vim() {
     /Applications/MacVim.app/Contents/MacOS/Vim $*
   }
