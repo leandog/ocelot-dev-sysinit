@@ -2,7 +2,7 @@
 
 result=`which gcc`
 
-if [$result -eq ""]
+if [[ $result -eq "" ]]
 then
   echo "It looks like you don't have XCode 4.4 or higher installed... or, the commandline tools installed at minimum."
   echo "If you have XCode 4.3 or higher installed, launch XCode, open the preferences, click on Downloads, and be sure to install the Commandline Tools!"
@@ -30,7 +30,7 @@ fi
 
 result=`which brew`
 
-if [$result -eq ""]
+if [[ $result -eq "" ]]
 then
   echo "HomeBrew is not installed"
   echo "Installing HomeBrew"
