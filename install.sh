@@ -20,12 +20,12 @@ if [[ $result =~ No\ such\ file ]]
 then
   echo "Looks like you don't have a .bash_profile, let's make one!"
   touch ~/.bash_profile
-  cat >> ~/.bash_profile <<EOF
+  cat >> ~/.bash_profile <<EOL
   if [ -f ~/.bashrc ] && [ "${SHELL##*/}" == "bash" ]
   then
     . ~/.bashrc
   fi
-  EOF
+  EOL
 
 fi
 
@@ -64,7 +64,7 @@ if ! [[ $result =~ git ]]
 then
   echo "Installing git"
   brew install git
-  cat >> ~/.gitconfig <<EOF
+  cat >> ~/.gitconfig <<EOL
   [color]
     diff = auto
     status = auto
@@ -96,7 +96,7 @@ then
     dc = diff --cached
     pr = pull --rebase
     ar = add -A
-  EOF
+  EOL
 
   echo "What is your name to be used for Git?"
   read -p "This is your first & last name to be used in Git commits (ie. John Doe) :" yn
@@ -113,11 +113,11 @@ then
   brew install macvim
   echo "Adding vim override to local .bashrc"
 
-  cat >> ~/.bashrc <<EOF
+  cat >> ~/.bashrc <<EOL
   vim() {
     /Applications/MacVim.app/Contents/MacOS/Vim $*
   }
-  EOF
+  EOL
 
   source ~/.bashrc
   echo "Install Pathogen plugin for Vim"
