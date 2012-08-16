@@ -19,13 +19,13 @@ result=`ls -la ~/.bash_profile 2>&1`
 if [[ $result =~ No\ such\ file ]]
 then
   echo "Looks like you don't have a .bash_profile, let's make one!"
-  `touch ~/.bash_profile`
-  `cat <<EOF >> ~/.bash_profile
+  touch ~/.bash_profile
+  cat <<EOF >> ~/.bash_profile
   if [ -f ~/.bashrc ] && [ "${SHELL##*/}" == "bash" ]
   then
     . ~/.bashrc
   fi
-  EOF`
+  EOF
 fi
 
 result=`which brew 2>&1`
@@ -34,13 +34,13 @@ if [[ -z "$result" ]]
 then
   echo "HomeBrew is not installed"
   echo "Installing HomeBrew"
-  `ruby <(curl -fsSkL raw.github.com/mxcl/homebrew/go)`
-  `brew tap homebrew/dupes`
+  ruby <(curl -fsSkL raw.github.com/mxcl/homebrew/go)
+  brew tap homebrew/dupes
 else
   echo "HomeBrew is already installed: `echo $result`"
   echo "Upgrading HomeBrew to the latest build"
-  `brew update`
-  `brew tap homebrew/dupes`
+  brew update
+  brew tap homebrew/dupes
 fi
 
 result=`brew list`
@@ -48,22 +48,22 @@ result=`brew list`
 if ! [[ $result =~ apple-gcc42 ]]
 then
   echo "Installing Apple's older GCC 4.2 binaries from HomeBrew"
-  `brew install apple-gcc42`
+  brew install apple-gcc42
   echo "Symlinking GCC in"
-  `sudo ln -s /usr/local/bin/gcc-4.2 /usr/bin/gcc-4.2`
+  sudo ln -s /usr/local/bin/gcc-4.2 /usr/bin/gcc-4.2
 fi
 
 if ! [[ $result =~ ack ]]
 then
   echo "Installing Ack, this will help with Vim later"
-  `brew install ack`
+  brew install ack
 fi
 
 if ! [[ $result =~ git ]]
 then
   echo "Installing git"
-  `brew install git`
-  `cat <<EOF >> ~/.gitconfig
+  brew install git
+  cat <<EOF >> ~/.gitconfig
   [color]
     diff = auto
     status = auto
@@ -95,7 +95,7 @@ then
     dc = diff --cached
     pr = pull --rebase
     ar = add -A
-  EOF`
+  EOF
 
   while true; do
     echo "What is your name to be used for Git?"
@@ -113,18 +113,20 @@ fi
 if ! [[ $result =~ macvim ]]
 then
   echo "Installing MacVim since it is much newer than the Vim installed in OS X"
-  `brew install macvim`
+  brew install macvim
   echo "Adding vim override to local .bashrc"
-  `cat <<EOF >> ~/.bashrc
+
+  cat <<EOF >> ~/.bashrc
   vim() {
     /Applications/MacVim.app/Contents/MacOS/Vim $*
   }
-  EOF`
-  `source ~/.bashrc`
+  EOF
+
+  source ~/.bashrc
   echo "Install Pathogen plugin for Vim"
-  `mkdir -p ~/.vim/autoload ~/.vim/bundle`
-  `curl -so ~/.vim/autoload/pathogen.vim https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim`
-  `curl -so ~/.vim/update_bundles https://raw.github.com/leandog/ocelot-dev-sysinit/master/update_bundles`
+  mkdir -p ~/.vim/autoload ~/.vim/bundle
+  curl -so ~/.vim/autoload/pathogen.vim https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
+  curl -so ~/.vim/update_bundles https://raw.github.com/leandog/ocelot-dev-sysinit/master/update_bundles
   vimrccheck=`ls -la ~/.vimrc 2>&1`
 
   if [[ $vimrccheck =~ No\ such\ file ]]
@@ -143,23 +145,23 @@ if [[ -z "$result" ]]
 then
   echo "RVM Not installed"
   echo "Installing RVM"
-  `curl -L https://get.rvm.io | bash -s stable`
-  `rvm reload`
-  `curl -so ~/.rvmsh https://raw.github.com/gist/898797/ead7ee759f8a1445db781b5b15bda49b418311f4//etc/profile.d/rvm.sh`
-  `echo 'source ~/.rvmsh' >> ~/.bashrc`
-  `echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"' >> ~/.bashrc`
+  curl -L https://get.rvm.io | bash -s stable
+  rvm reload
+  curl -so ~/.rvmsh https://raw.github.com/gist/898797/ead7ee759f8a1445db781b5b15bda49b418311f4//etc/profile.d/rvm.sh
+  echo 'source ~/.rvmsh' >> ~/.bashrc
+  echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"' >> ~/.bashrc
   echo "Installing a default .gemrc"
-  `curl -so ~/.gemrc https://raw.github.com/leandog/ocelot-dev-sysinit/master/.gemrc`
+  curl -so ~/.gemrc https://raw.github.com/leandog/ocelot-dev-sysinit/master/.gemrc
   echo "Installing a default .rvmrc"
-  `echo "rvm_ps1=1" >> ~/.rvmrc`
-  `echo 'rvm_path="`echo $HOME`/.rvm"' >> ~/.rvmrc`
-  `echo "rvm_pretty_print_flag=1" >> ~/.rvmrc`
-  `echo "rvm_gemset_create_on_use_flag=1" >> ~/.rvmrc`
+  echo "rvm_ps1=1" >> ~/.rvmrc
+  echo 'rvm_path="`echo $HOME`/.rvm"' >> ~/.rvmrc
+  echo "rvm_pretty_print_flag=1" >> ~/.rvmrc
+  echo "rvm_gemset_create_on_use_flag=1" >> ~/.rvmrc
 else
   echo "RVM installed: `echo $result`"
   echo "Upgrading RVM to the latest build"
-  `rvm get head`
-  `rvm reload`
+  rvm get head
+  rvm reload
 fi
 
 
