@@ -97,15 +97,15 @@ then
     ar = add -A
   EOL`
 
-  echo "What is your name to be used for Git?"
-  echo "This is your first & last name to be used in Git commits (ie. John Doe) :"
-  read yn
-  git config --global user.name "$yn"
+  echo " "
+  read -p "What is your first & last name to be used in Git commits (ie. John Doe) : ";
+  echo
+  git config --global user.name "$REPLY"
 
-  echo "What is your email to be used for Git?"
-  echo "This is to be used in Git commits (ie. john.doe@leandog.com) :"
-  read yn
-  git config --global user.email "$yn"
+  echo " "
+  read -p "What is your email to be used in Git commits (ie. john.doe@leandog.com) : ";
+  echo
+  git config --global user.email "$REPLY"
 fi
 
 if ! [[ $result =~ macvim ]]
