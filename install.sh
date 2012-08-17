@@ -7,7 +7,6 @@ then
   echo -e "\nIt looks like you don't have Xcode installed. You need Xcode 4.3 or higher with the Command Line Tools installed to be able to continue"
 else
   echo -e "\nYou have `xcodebuild -version` installed"
-  exit
 fi
 
 result=`which gcc`
