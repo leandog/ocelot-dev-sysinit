@@ -22,7 +22,7 @@ result=`ls -la ~/.bash_profile 2>&1`
 if [[ $result =~ No\ such\ file ]]
 then
 
-  echo e- "\nLooks like you don't have a .bash_profile, let's make one!"
+  echo -e "\nLooks like you don't have a .bash_profile, let's make one!"
   touch ~/.bash_profile
 
   cat > ~/.bash_profile <<EOL
