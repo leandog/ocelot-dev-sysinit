@@ -17,23 +17,6 @@ then
   exit
 fi
 
-result=`ls -la ~/.bash_profile 2>&1`
-
-if [[ $result =~ No\ such\ file ]]
-then
-
-  echo -e "\nLooks like you don't have a .bash_profile, let's make one!"
-  touch ~/.bash_profile
-
-  cat > ~/.bash_profile <<EOL
-if [ -f ~/.bashrc ] && [ "${SHELL##*/}" == "bash" ]
-then
-  . ~/.bashrc
-fi
-EOL
-
-fi
-
 result=`which brew 2>&1`
 
 if [[ -z "$result" ]]
@@ -50,14 +33,6 @@ else
 fi
 
 result=`brew list`
-
-if ! [[ $result =~ apple-gcc42 ]]
-then
-  echo -e "\nInstalling Apple's older GCC 4.2 binaries from HomeBrew"
-  brew install apple-gcc42
-  echo -e "\nSymlinking GCC in"
-  sudo ln -s /usr/local/bin/gcc-4.2 /usr/bin/gcc-4.2
-fi
 
 if ! [[ $result =~ ack ]]
 then
@@ -115,34 +90,35 @@ EOL
   git config --global user.email "$REPLY"
 fi
 
+if ! [[ $result =~ apple-gcc42 ]]
+then
+  echo -e "\nInstalling Apple's older GCC 4.2 binaries from HomeBrew"
+  brew install apple-gcc42
+  echo -e "\nSymlinking GCC in"
+  sudo ln -s /usr/local/bin/gcc-4.2 /usr/bin/gcc-4.2
+fi
+
 if ! [[ $result =~ macvim ]]; then
   echo -e "\nInstalling MacVim since it is much newer than the Vim installed in OS X"
-  brew install macvim
-  echo -e "\nAdding vim override to local .bashrc"
-
-  cat >> ~/.bashrc <<EOL
-vim() {
-  /Applications/MacVim.app/Contents/MacOS/Vim $*
-}
-EOL
+  brew install macvim --override-system-vim
 
   source ~/.bashrc
   echo -e "\nInstall Pathogen plugin for Vim"
   mkdir -p ~/.vim/autoload ~/.vim/bundle
   curl -so ~/.vim/autoload/pathogen.vim https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
+
+  echo -e "\nInstalling a script to get some useful Vim plugins"
   curl -so ~/.vim/update_bundles https://raw.github.com/leandog/ocelot-dev-sysinit/master/update_bundles
   chmod 755 ~/.vim/update_bundles
-  
   ~/.vim/update_bundles
-  vimrccheck=`ls -la ~/.vimrc 2>&1`
 
-  if [[ $vimrccheck =~ No\ such\ file ]]
+  if ! [[ -f ~/.vimrc ]]
   then
     echo -e "\nInstalling a default .vimrc"
     curl -so ~/.vimrc https://raw.github.com/leandog/ocelot-dev-sysinit/master/.vimrc
   else
-    echo -e "\nYou appear to already have a .vimrc, here's what we would've put in there..."
-    echo `curl https://raw.github.com/leandog/ocelot-dev-sysinit/master/.vimrc`
+    echo -e "\nYou appear to already have a .vimrc, here's what we would've put in there...\n"
+    curl https://raw.github.com/leandog/ocelot-dev-sysinit/master/.vimrc
   fi
 fi
 
@@ -154,10 +130,17 @@ then
   echo "Installing RVM"
   touch ~/.bashrc
   curl -L https://get.rvm.io | bash -s stable
-  rvm reload
   curl -so ~/.rvmsh https://raw.github.com/gist/898797/ead7ee759f8a1445db781b5b15bda49b418311f4//etc/profile.d/rvm.sh
-  echo 'source ~/.rvmsh' >> ~/.bashrc
-  echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"' >> ~/.bashrc
+  cat >> ~/.bashrc <<EOL
+for PROFILE_SCRIPT IN $( ls /usr/local/etc/bash_completion.d/* ); do
+  . $PROFILE_SCRIPT
+done
+
+export CC=/usr/local/bin/gcc-4.2
+export PATH=/usr/local/bin:/usr/local/sbin:$PATH
+source ~/.rvmsh
+EOL
+
   echo -e "\nInstalling a default .gemrc"
   echo "gem: --no-ri --no-rdoc" >> ~/.gemrc
   echo -e "\nInstalling a default .rvmrc"
@@ -168,6 +151,8 @@ rvm_pretty_print_flag=1
 rvm_gemset_create_on_use_flag=1
 EOL
 
+  source ~/.bashrc
+  rvm reload
 else
   echo -e "\nRVM installed: `echo $result`"
   echo "Upgrading RVM to the latest build"
@@ -175,4 +160,18 @@ else
   rvm reload
 fi
 
-source ~/.bashrc
+if ! [[ -f ~/.bash_profile ]]
+then
+
+  echo -e "\nLooks like you don't have a .bash_profile, let's make one!"
+  touch ~/.bash_profile
+
+  cat > ~/.bash_profile <<EOL
+if [ -f ~/.bashrc ] && [ "${SHELL##*/}" == "bash" ]
+then
+  . ~/.bashrc
+fi
+EOL
+
+fi
+
