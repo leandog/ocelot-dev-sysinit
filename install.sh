@@ -23,6 +23,8 @@ then
   echo -e "\nHomeBrew is not installed"
   echo "Installing HomeBrew"
   ruby <(curl -fsSkL raw.github.com/mxcl/homebrew/go)
+  echo "export PATH=/usr/local/bin:/usr/local/sbin:$PATH" >> ~/.bashrc
+  source ~/.bashrc
   brew tap homebrew/dupes
 else
   echo -e "\nHomeBrew is already installed: `echo $result`"
@@ -39,12 +41,14 @@ then
   brew install ack
 fi
 
-if ! [[ $result =~ git ]]
+othergit=`which git`
+
+if ! [[ $result =~ git || -z "$othergit" ]]
 then
-  echo -e "\nInstalling git"
+  echo -e "\nInstalling git, you'll need this for source control"
   brew install git
 
-  cat > ~/.gitconfig <<EOL
+  cat >> ~/.gitconfig <<EOL
 [color]
   diff = auto
   status = auto
@@ -91,10 +95,10 @@ fi
 
 if ! [[ $result =~ apple-gcc42 ]]
 then
-  echo -e "\nInstalling Apple's older GCC 4.2 binaries from HomeBrew"
+  echo -e "\nInstalling Apple's older GCC 4.2 binaries from HomeBrew to be able to build Ruby prior to 1.9.3 and most gems"
   brew install apple-gcc42
   echo -e "\nSymlinking GCC in"
-  sudo ln -s /usr/local/bin/gcc-4.2 /usr/bin/gcc-4.2
+  #sudo ln -s /usr/local/bin/gcc-4.2 /usr/bin/gcc-4.2
 fi
 
 if ! [[ $result =~ macvim ]]; then
@@ -131,12 +135,7 @@ then
   curl -L https://get.rvm.io | bash -s stable
   curl -so ~/.rvmsh https://raw.github.com/gist/898797/ead7ee759f8a1445db781b5b15bda49b418311f4//etc/profile.d/rvm.sh
   cat >> ~/.bashrc <<EOL
-for PROFILE_SCRIPT IN $( ls /usr/local/etc/bash_completion.d/* ); do
-  . $PROFILE_SCRIPT
-done
-
-export CC=/usr/local/bin/gcc-4.2
-export PATH=/usr/local/bin:/usr/local/sbin:$PATH
+#export CC=/usr/local/bin/gcc-4.2
 source ~/.rvmsh
 EOL
 
