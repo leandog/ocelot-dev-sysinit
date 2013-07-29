@@ -118,8 +118,7 @@ if ! [[ $result =~ vim ]]; then
 
   echo -e "Currently will overwrite your .vim rc"
   git clone git@github.com:leandog/vim-config.git ~/.vim
-  cd ~/.vim
-  postinstall.sh
+  ~/.vim/postinstall.sh
 fi
 
 result=`which rvm`
