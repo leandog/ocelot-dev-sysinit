@@ -41,6 +41,12 @@ then
   brew install ack
 fi
 
+if ! [[ $result =~ the_silver_searcher ]]
+then
+  echo -e "\nInstalling the_silver_searcher, this will help with Vim later"
+  brew install the_silver_searcher
+fi
+
 othergit=`which git`
 
 if ! [[ $result =~ git || -z "$othergit" ]]
@@ -101,28 +107,19 @@ then
   #sudo ln -s /usr/local/bin/gcc-4.2 /usr/bin/gcc-4.2
 fi
 
-if ! [[ $result =~ macvim ]]; then
-  echo -e "\nInstalling MacVim since it is much newer than the Vim installed in OS X"
-  brew install macvim --override-system-vim
+
+if ! [[ $result =~ vim ]]; then
+  echo -e "\nInstalling vim"
+  brew install vim
 
   source ~/.bashrc
-  echo -e "\nInstall Pathogen plugin for Vim"
-  mkdir -p ~/.vim/autoload ~/.vim/bundle
-  curl -so ~/.vim/autoload/pathogen.vim https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
+  echo -e "\nIntalling Menlo Regular for Powerline font which allows unicode characters to display"
+  curl -so /Library/Fonts/Menlo\ Regular\ For\ Powerline.ttf https://raw.github.com/Lokaltog/powerline-fonts/master/Menlo/Menlo%20Regular%20for%20Powerline.ttf
 
-  echo -e "\nInstalling a script to get some useful Vim plugins"
-  curl -so ~/.vim/update_bundles https://raw.github.com/leandog/ocelot-dev-sysinit/master/update_bundles
-  chmod 755 ~/.vim/update_bundles
-  ~/.vim/update_bundles
-
-  if ! [[ -f ~/.vimrc ]]
-  then
-    echo -e "\nInstalling a default .vimrc"
-    curl -so ~/.vimrc https://raw.github.com/leandog/ocelot-dev-sysinit/master/.vimrc
-  else
-    echo -e "\nYou appear to already have a .vimrc, here's what we would've put in there...\n"
-    curl https://raw.github.com/leandog/ocelot-dev-sysinit/master/.vimrc
-  fi
+  echo -e "Currently will overwrite your .vim rc"
+  git clone git@github.com:leandog/vim-config.git ~/.vim
+  cd ~/.vim
+  postinstall.sh
 fi
 
 result=`which rvm`
