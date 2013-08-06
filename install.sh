@@ -117,7 +117,7 @@ if ! [[ $result =~ vim ]]; then
   curl -so /Library/Fonts/Menlo\ Regular\ For\ Powerline.ttf https://raw.github.com/Lokaltog/powerline-fonts/master/Menlo/Menlo%20Regular%20for%20Powerline.ttf
 
   echo -e "Currently will overwrite your .vim rc"
-  git clone git@github.com:leandog/vim-config.git ~/.vim
+  git clone https://github.com/leandog/vim-config.git
   ~/.vim/postinstall.sh
 fi
 
