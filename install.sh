@@ -99,15 +99,6 @@ EOL
   git config --global user.email "$REPLY"
 fi
 
-if ! [[ $result =~ apple-gcc42 ]]
-then
-  echo -e "\n**** Installing Apple's older GCC 4.2 binaries from HomeBrew to be able to build Ruby prior to 1.9.3 and most gems"
-  brew install apple-gcc42
-  echo -e "\n**** Symlinking GCC in"
-  #sudo ln -s /usr/local/bin/gcc-4.2 /usr/bin/gcc-4.2
-fi
-
-
 if ! [[ $result =~ vim ]]; then
   echo -e "\n**** Installing vim"
   brew install vim
@@ -116,7 +107,7 @@ if ! [[ $result =~ vim ]]; then
   echo -e "\n**** Installing Menlo Regular for Powerline font which allows unicode characters to display"
   curl -so /Library/Fonts/Menlo\ Regular\ For\ Powerline.ttf https://raw.github.com/Lokaltog/powerline-fonts/master/Menlo/Menlo%20Regular%20for%20Powerline.ttf
 
-  echo -e "**** Currently will overwrite your .vim rc"
+  echo -e "**** Currently will overwrite your .vimrc"
   git clone https://github.com/leandog/vim-config.git ~/.vim
   ~/.vim/postinstall.sh
 fi
@@ -129,9 +120,8 @@ then
   echo "**** Installing RVM"
   touch ~/.bashrc
   curl -L https://get.rvm.io | bash -s stable
-  curl -so ~/.rvmsh https://raw.github.com/gist/898797/ead7ee759f8a1445db781b5b15bda49b418311f4//etc/profile.d/rvm.sh
+  curl -so ~/.rvmsh https://raw.github.com/leandog/ocelot-dev-sysinit/master/rvm.sh
   cat >> ~/.bashrc <<EOL
-#export CC=/usr/local/bin/gcc-4.2
 source ~/.rvmsh
 EOL
 
@@ -150,7 +140,7 @@ EOL
 else
   echo -e "\n**** RVM installed: `echo $result`"
   echo "**** Upgrading RVM to the latest build"
-  rvm get head
+  rvm get stable
   rvm reload
 fi
 
@@ -168,4 +158,7 @@ fi
 EOL
 
 fi
+
+echo -e "\n**** Installing Apple's older GCC 4.2 binaries & other required libs from HomeBrew to be able to build Ruby prior to 1.9.3 and most gems"
+rvm requirements
 
