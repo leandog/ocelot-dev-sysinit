@@ -162,3 +162,9 @@ fi
 echo -e "\n**** Installing Apple's older GCC 4.2 binaries & other required libs from HomeBrew to be able to build Ruby prior to 1.9.3 and most gems"
 rvm requirements
 
+echo -e "\n**** Making your terminal actually use colors!"
+cat > ~/.bashrc <<EOL
+export CLICOLOR=1
+export LSCOLORS=GxFxCxDxBxegedabagaced
+EOL
+
